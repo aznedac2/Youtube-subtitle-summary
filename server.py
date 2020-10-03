@@ -12,6 +12,8 @@ import ssl
 import json
 import requests
 
+from dao import userdao
+
 app = Flask(__name__)
 
 ctx = ssl.create_default_context()
@@ -64,6 +66,14 @@ def index():
           trtext = '요약 번역 쿼리 한도를 초과했습니다'
         else:
           trtext = result['message']['result']['translatedText']
+
+        try:
+          parser = reqparse.RequestParser()
+          parser.add_argument('url', required=True, type=str, help='url cannot be blank')
+          args = parser.parse_args()
+          return userdao.createUser(str(args['url']))
+        except Exception as e :
+          return {'error': str(e)}
 
         return render_template('index.html', src_url=src_url, text=text, fulltext = fulltext, trtext = trtext)
 
