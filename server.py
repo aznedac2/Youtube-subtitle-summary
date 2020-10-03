@@ -68,4 +68,4 @@ def index():
         return render_template('index.html', src_url=src_url, text=text, fulltext = fulltext, trtext = trtext)
 
 if __name__ == '__main__':
-   app.run(debug = True)
+   app.run('0.0.0.0', port=3000, threaded=True)
